@@ -1,0 +1,31 @@
+import requests
+
+# 1. List the websites you want to track
+websites = [
+    "https://www.google.com",
+    "https://www.github.com",
+    "https://www.thiswebsiteisprobablydown123.com"
+]
+
+def check_sites():
+    print("--- Starting Status Check ---")
+    
+    for url in websites:
+        try:
+            # We "get" the page and set a timeout so it doesn't hang forever
+            response = requests.get(url, timeout=5)
+            
+            # A status code of 200 means "OK"
+            if response.status_code == 200:
+                print(f"[ONLINE] {url}")
+            else:
+                print(f"[ISSUE]  {url} (Status: {response.status_code})")
+                
+        except requests.exceptions.RequestException:
+            # This happens if the URL is invalid or the site is totally offline
+            print(f"[DOWN]   {url}")
+
+    print("--- Check Complete ---")
+
+if __name__ == "__main__":
+    check_sites()
